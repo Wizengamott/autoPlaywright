@@ -7,7 +7,7 @@ export class HomePage {
     }
 
     async navigate() {
-        await this.page.goto('https://qauto.forstudy.space/')
+        await this.page.goto('')
     }
 
     async openSignUpModal() {
