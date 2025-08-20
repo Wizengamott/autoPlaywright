@@ -1,15 +1,15 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test'
-require('dotenv').config()
 import config from './config'
+import * as path from 'path'
+
+export const storageStatePath = path.join(__dirname, 'storageState.json')
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// require('dotenv').config() // Удален: эта строка больше не нужна, так как конфиг из config.js
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -29,9 +29,11 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: config.baseURL,
-    // baseURL: process.env.BASE_URL,  // через env файл, якби не було конфіг файла
     trace: 'on-first-retry',
+    httpCredentials: config.httpCredentials
   },
+
+  globalSetup: require.resolve('./global-setup'),
 
   /* Configure projects for major browsers */
   projects: [
@@ -49,7 +51,6 @@ export default defineConfig({
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
     // },
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
@@ -77,5 +78,4 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
-
+})
